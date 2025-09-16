@@ -60,7 +60,7 @@ coverage/
 # /fuel/packages/parser/
 
 # dynamically generated files
-/api/app/logs/*/*/*
-/api/app/cache/*/*
-/api/app/config/crypt.php
-/api/app/public
+/api/app/logs/
+/api/app/public/
+/api/json_data/
+
