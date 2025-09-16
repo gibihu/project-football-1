@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ถ้ามีไฟล์หรือโฟลเดอร์จริงอยู่ก็ใช้เลย
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # ถ้าไม่มีก็ให้ไป index.html
+    RewriteRule ^ index.html [L]
+</IfModule>
