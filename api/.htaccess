@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# ถ้าไฟล์จริงมีอยู่ ให้ใช้ไฟล์นั้น
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# ถ้า directory จริง ให้ใช้ directory
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# อื่น ๆ redirect ไป index.php
+RewriteRule ^ index.php [L]

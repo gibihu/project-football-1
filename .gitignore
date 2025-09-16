@@ -1,0 +1,66 @@
+# ------------------------
+# System / OS
+# ------------------------
+.DS_Store
+Thumbs.db
+*.log
+*.lock
+*.tmp
+*.bak
+
+# ------------------------
+# PHP / Composer
+# ------------------------
+vendor/
+composer.lock
+phpunit.xml
+phpunit.xml.dist
+.env
+.env.local
+.env.*.local
+public/store/
+# ------------------------
+# Node.js / React
+# ------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.next/
+out/
+build/
+dist/
+coverage/
+
+# ------------------------
+# IDE / Editor
+# ------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+
+# the composer package lock file and install directory
+# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
+# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
+# /composer.lock
+/api/vendor
+
+# the fuelphp document
+/docs/
+
+# you may install these packages with `oil package`.
+# http://fuelphp.com/docs/packages/oil/package.html
+# /fuel/packages/auth/
+# /fuel/packages/email/
+# /fuel/packages/oil/
+# /fuel/packages/orm/
+# /fuel/packages/parser/
+
+# dynamically generated files
+/api/app/logs/*/*/*
+/api/app/cache/*/*
+/api/app/config/crypt.php
+/api/app/public

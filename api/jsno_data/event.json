@@ -1,0 +1,210 @@
+{
+    "match": {
+        "id": "652644",
+        "date": "2025-09-12",
+        "home_name": "Persik Kediri",
+        "away_name": "Malut United",
+        "score": "2 - 1",
+        "ht_score": "2 - 0",
+        "ft_score": "2 - 1",
+        "et_score": "",
+        "ps_score": "",
+        "time": "FT",
+        "league_id": "0",
+        "status": "FINISHED",
+        "added": "2025-09-12 08:15:02",
+        "last_changed": "2025-09-12 10:26:03",
+        "home_id": "5746",
+        "away_id": "8064",
+        "competition_id": "27",
+        "location": "Stadion Brawijaya",
+        "fixture_id": "1787148",
+        "scheduled": "08:30",
+        "home": {
+            "id": "5746",
+            "name": "Persik Kediri",
+            "country_id": "90",
+            "stadium": "Stadion Brawijaya",
+            "location": "Stadion Brawijaya"
+        },
+        "away": {
+            "id": "8064",
+            "name": "Malut United",
+            "country_id": "90",
+            "stadium": "Gelora Kie Raha",
+            "location": "Gelora Kie Raha"
+        },
+        "competition": {
+            "id": "27",
+            "name": "GO-JEK Liga 1",
+            "is_league": "1",
+            "is_cup": "0",
+            "tier": "1",
+            "has_groups": "1",
+            "active": "1",
+            "national_teams_only": "0"
+        }
+    },
+    "event": [
+        {
+            "id": "317695289",
+            "match_id": "652644",
+            "player": "Jose Enrique",
+            "time": "2",
+            "event": "GOAL",
+            "sort": "0",
+            "home_away": "h",
+            "info": "W. Lugo"
+        },
+        {
+            "id": "317695290",
+            "match_id": "652644",
+            "player": "Gustavo",
+            "time": "5",
+            "event": "YELLOW_CARD",
+            "sort": "1",
+            "home_away": "a",
+            "info": null
+        },
+        {
+            "id": "317695291",
+            "match_id": "652644",
+            "player": "I. Garcia",
+            "time": "16",
+            "event": "GOAL",
+            "sort": "2",
+            "home_away": "h",
+            "info": "W. Lugo"
+        },
+        {
+            "id": "317695292",
+            "match_id": "652644",
+            "player": "S. David",
+            "time": "46",
+            "event": "SUBSTITUTION",
+            "sort": "3",
+            "home_away": "a",
+            "info": "Y. Sayuri"
+        },
+        {
+            "id": "317695293",
+            "match_id": "652644",
+            "player": "W. Angulo",
+            "time": "46",
+            "event": "SUBSTITUTION",
+            "sort": "4",
+            "home_away": "a",
+            "info": "Vico"
+        },
+        {
+            "id": "317695294",
+            "match_id": "652644",
+            "player": "I. Garcia",
+            "time": "51",
+            "event": "YELLOW_CARD",
+            "sort": "5",
+            "home_away": "h",
+            "info": null
+        },
+        {
+            "id": "317695295",
+            "match_id": "652644",
+            "player": "Y. Munawar",
+            "time": "57",
+            "event": "SUBSTITUTION",
+            "sort": "6",
+            "home_away": "h",
+            "info": "I. Mila"
+        },
+        {
+            "id": "317695296",
+            "match_id": "652644",
+            "player": "T. Castanheira",
+            "time": "57",
+            "event": "SUBSTITUTION",
+            "sort": "7",
+            "home_away": "h",
+            "info": "A. E. Jayanto"
+        },
+        {
+            "id": "317695297",
+            "match_id": "652644",
+            "player": "W. Lugo",
+            "time": "57",
+            "event": "SUBSTITUTION",
+            "sort": "8",
+            "home_away": "h",
+            "info": "M. Khanafi"
+        },
+        {
+            "id": "317695298",
+            "match_id": "652644",
+            "player": "Gustavo",
+            "time": "60",
+            "event": "GOAL",
+            "sort": "9",
+            "home_away": "a",
+            "info": "Igor Inocencio"
+        },
+        {
+            "id": "317695299",
+            "match_id": "652644",
+            "player": "Kiko",
+            "time": "66",
+            "event": "YELLOW_CARD",
+            "sort": "10",
+            "home_away": "h",
+            "info": null
+        },
+        {
+            "id": "317695300",
+            "match_id": "652644",
+            "player": "Tyronne",
+            "time": "75",
+            "event": "SUBSTITUTION",
+            "sort": "11",
+            "home_away": "a",
+            "info": "M. Drajad"
+        },
+        {
+            "id": "317695301",
+            "match_id": "652644",
+            "player": "T. Setiawan",
+            "time": "88",
+            "event": "SUBSTITUTION",
+            "sort": "12",
+            "home_away": "a",
+            "info": "F. Butuan"
+        },
+        {
+            "id": "317695302",
+            "match_id": "652644",
+            "player": "Y. Adiatama",
+            "time": "88",
+            "event": "SUBSTITUTION",
+            "sort": "13",
+            "home_away": "h",
+            "info": "Y. Meilana"
+        },
+        {
+            "id": "317695303",
+            "match_id": "652644",
+            "player": "Jose Enrique",
+            "time": "90",
+            "event": "YELLOW_CARD",
+            "sort": "14",
+            "home_away": "h",
+            "info": null
+        },
+        {
+            "id": "317695304",
+            "match_id": "652644",
+            "player": "Bayu Otto",
+            "time": "90",
+            "event": "SUBSTITUTION",
+            "sort": "15",
+            "home_away": "h",
+            "info": "Lucao"
+        }
+    ]
+}
