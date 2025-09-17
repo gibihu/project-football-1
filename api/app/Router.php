@@ -49,6 +49,11 @@ class Router
         $this->addRoute('POST', $path, $handler, $middlewares);
     }
 
+    public function patch($path, $handler, $middlewares = [])
+    {
+        $this->addRoute('PATCH', $path, $handler, $middlewares);
+    }
+
     /**
      * Add PUT route
      * 

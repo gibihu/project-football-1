@@ -3,16 +3,13 @@ import AuthLayout from "@/layout/auth-layouy";
 import { Head } from "@/components/app-head";
 import { UserTable } from "./components/user-table";
 import { AppSidebar } from "@/components/app-sidebar";
-import { usePage } from "@/hooks/usePage";
 
-export default function DashboardHome() {
-
-    usePage.getState().fetchUser(true);
+export default function UsersDashboard() {
     return (
         <AuthLayout>
-            <Head title="Dashboard" />
-            <AppSidebar title="Dashboard">
-                {/* <UserTable /> */}
+            <Head title="Users" />
+            <AppSidebar title="Users">
+                <UserTable />
             </AppSidebar>
         </AuthLayout>
     )

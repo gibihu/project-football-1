@@ -37,14 +37,6 @@ CREATE TABLE IF NOT EXISTS wallet_history (
     FOREIGN KEY (wallet_id) REFERENCES wallet(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS `boards` (
-    id CHAR(36) PRIMARY KEY, -- UUID ของรายการ
-    `url` int(11) NOT NULL,
-    `json` longtext NOT NULL,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 
 CREATE TABLE IF NOT EXISTS flags (
     id INT(11) PRIMARY KEY AUTO_INCREMENT,
@@ -55,6 +47,11 @@ CREATE TABLE IF NOT EXISTS flags (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS matches (
+    id INT(11) PRIMARY KEY UNIQUE,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS match_events (
     id INT(11) PRIMARY KEY AUTO_INCREMENT,
@@ -77,6 +74,7 @@ CREATE TABLE IF NOT EXISTS match_player (
 
 CREATE TABLE IF NOT EXISTS packages (
     id               CHAR(36) PRIMARY KEY,                -- UUID
+    sort_no INT(11) UNSIGNED NOT NULL UNIQUE,
     points            INT UNSIGNED NOT NULL,               -- จำนวนเหรียญ
     price            DECIMAL(10,2) UNSIGNED NOT NULL,              -- ราคาเป็นบาท
     price_per_points   DECIMAL(4,1) UNSIGNED NOT NULL,               -- ราคา/เหรียญ (เช่น 3.3)
@@ -91,18 +89,20 @@ CREATE TABLE IF NOT EXISTS packages (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS transactions (
-    id              BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id              CHAR(36) NOT NULL PRIMARY KEY,
     user_id         CHAR(36) NOT NULL,          -- ผู้ใช้งาน
     package_id      CHAR(36) NOT NULL,                 -- อ้างอิงไปยัง packages.uuid
     user_reference  VARCHAR(10) NULL,                -- อ้างอิงผู้ใช้ใส่เอง (เช่นหมายเหตุในสลิปโอนเงิน)
     reference_code  VARCHAR(100) NULL,                 -- รหัสอ้างอิง เช่น เลขที่ธุรกรรมจาก payment gateway
     payment_method  ENUM('bank_transfer', 'credit_card', 'paypal', 'promptpay', 'other') NOT NULL DEFAULT 'bank_transfer',
     amount          DECIMAL(12,2) NOT NULL,            -- ยอดเงินที่ต้องจ่าย
+    points          DECIMAL(12) NOT NULL,            -- ยอดเงินที่ต้องจ่าย
     currency        VARCHAR(10) NOT NULL DEFAULT 'THB',-- รองรับหลายสกุลเงินในอนาคต
     status          ENUM('pending', 'awaiting_approval', 'approved', 'rejected', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
     slip_url        VARCHAR(255) NULL,                 -- หลักฐานการโอน (ถ้าเป็น manual)
     paid_at         TIMESTAMP NULL,                    -- เวลาที่ชำระเงิน (จริง)
     approved_at     TIMESTAMP NULL,                    -- เวลาที่แอดมินกดอนุมัติ
+    expired_at      TIMESTAMP NULL,                    -- เวลาที่แอดมินกดอนุมัติ
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 

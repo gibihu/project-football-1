@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { LoaderCircle } from "lucide-react";
@@ -7,6 +8,7 @@ import { toast } from "sonner";
 type SelectPackpointProps = {
     onChange?: (id: string) => void;
     onSubmit?: (id: string | null) => void;
+    disabled?: boolean;
 };
 
 interface PackageType {
@@ -16,28 +18,20 @@ interface PackageType {
     price_per_points: number;
 }
 
-const mock: PackageType[] = [
-    {
-        id: 'jjasd-ereg',
-        points: 15,
-        price: 50,
-        price_per_points: 3.3,
-    },
-    {
-        id: 'jjas-dds5d-ereg',
-        points: 100,
-        price: 80,
-        price_per_points: 2,
-    },
-];
-
 const API_URL: string = import.meta.env.VITE_API_URL;
-export default function SelectPackpoint({ onChange, onSubmit }: SelectPackpointProps) {
+export default function SelectPackpoint({ onChange, onSubmit, disabled }: SelectPackpointProps) {
     const [items, setItems] = useState<PackageType[]>([]);
     const [selected, setSelected] = useState<string>('');
 
     const [isSelected, setIsSelected] = useState<boolean>(false);
     const [isFetch, setIsFetch] = useState<boolean>(true);
+    const [isDisabled, setIsDisabled] = useState<boolean>(false);
+
+    useEffect(()=>{
+        if(!selected) setIsDisabled(true);
+        if(disabled) setIsDisabled(true);
+        if(selected) setIsDisabled (false);
+    }, [disabled, selected]);
 
     const handleSelect = (id: string) => {
         console.log(id);
@@ -53,7 +47,7 @@ export default function SelectPackpoint({ onChange, onSubmit }: SelectPackpointP
     };
 
     const handleSubmit = () => {
-        onSubmit?.(selected); // ส่งค่า id ตอนกดปุ่ม
+        onSubmit?.(selected);
     };
 
 
@@ -97,16 +91,14 @@ export default function SelectPackpoint({ onChange, onSubmit }: SelectPackpointP
                         ))}
                     </div>
 
-                    <button
+                    <Button
                         onClick={handleSubmit}
-                        disabled={!selected}
-                        className={`w-full py-2 rounded text-white ${!isSelected
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-green-500 hover:bg-green-600"
-                            }`}
+                        disabled={isDisabled}
+                        variant="primary"
+                        className="w-full"
                     >
-                        Submit
-                    </button>
+                        เลือก
+                    </Button>
                 </>
             )}
         </div>
@@ -117,10 +109,10 @@ export default function SelectPackpoint({ onChange, onSubmit }: SelectPackpointP
 function CardPoints({item, selected = false}:{item:PackageType, selected?: boolean}) {
     return (
         <>
-            <Card className={selected ? 'border-yellow-600' : ''}>
+            <Card className={cn('cursor-pointer',selected ? 'border-yellow-600' : '')}>
                 <CardHeader className="flex items-end justify-center">
                     <CardTitle className="text-yellow-600 fonct-bold text-4xl">{item.points}</CardTitle>
-                    <CardDescription className="text-xs">พ้อยท์</CardDescription>
+                    <CardDescription className="text-xs">พอยท์</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <p className="text-center">{item.price} บาท</p>

@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EventTrans } from "@/lib/functions";
 import type { EventType } from "@/types/event";
 import type { MatchType } from "@/types/match";
@@ -18,15 +18,13 @@ export default function MatchEvent({ match_id, main_item }: { match_id: number, 
         const fetchData = async () => {
             setIsLoad(true);
             // const res = await fetch(`https://livescore-api.com/api-client/matches/live.json?&key=O9GiRG3laCyROLBr&secret=tsL0gvXuGlkKJUgx4XQVEUhPwPHlBiM5&lang=en`);
-            const res = await fetch(`${API_URL}/live/match/event?id=${match_id}&status=${main_item.status}`, { credentials: "include" });
+            const res = await fetch(`${API_URL}/match/event?id=${match_id}&status=${main_item.status}`, { credentials: "include" });
 
             const result = await res.json();
             // if (result.code == 200) {
             if (result.code == 200) {
                 const data = await result.data;
-                setData(data);
                 setEvents(data.event);
-                setMatch(data.match);
                 // console.log(data.event);
             } else {
                 const errors = result;

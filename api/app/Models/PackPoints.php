@@ -14,7 +14,6 @@ class PackPoints extends BaseModel
         'id',
         'points',
         'price',
-        'price_per_points',
         'published',
         'is_promo',
         'promo_title',

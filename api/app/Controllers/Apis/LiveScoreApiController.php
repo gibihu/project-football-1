@@ -105,4 +105,27 @@ class LiveScoreApiController extends BaseController{
         }
     }
 
+    public function history(Request $request){
+        try{
+            $req = $request->query();
+            $page = $req['page'] ?? 1;
+            $data = LiveScoreController::HistoryScore($page);
+            if (!$data) throw new Exception("ไม่สามารถดำเนินการได้!");
+            return response([
+                'message' => 'สำเร็จ',
+                'data' => $data->data,
+                'code' => 200
+            ], 200)->json();
+        }catch (\Exception $e) {
+            $response = [
+                'message' => 'มีบางอย่างผิดพลาด โปรดลองอีกครั้งในภายหลัง',
+                'code' => 500,
+            ];
+            if(env('APP_DEBUG')) $response['debug'] = [
+                'message' => $e->getMessage(),
+            ];
+            return response($response, 500)->json();
+        }
+    }
+
 }

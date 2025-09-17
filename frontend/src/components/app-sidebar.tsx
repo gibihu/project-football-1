@@ -16,12 +16,19 @@ import {
 } from "@/components/ui/sidebar"
 import { usePage } from "@/hooks/usePage";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { CirclePoundSterling, UsersRound, Wallet } from "lucide-react";
+import { BanknoteArrowUp, CirclePoundSterling, Package, UsersRound, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "./ui/separator";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "./ui/breadcrumb";
 
 // This is sample data.
+
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+    title?: string
+};
+
+export function AppSidebar({ title, children, ...props }: AppSidebarProps) {
+    const { user } = usePage();
 const data = {
     navMain: [
         {
@@ -29,12 +36,6 @@ const data = {
             href: "#",
             role: '',
             items: [
-                {
-                    title: "Users",
-                    href: "/dashboard",
-                    isActive: true,
-                    icon: UsersRound
-                },
                 {
                     title: "Wallet",
                     href: "/wallet",
@@ -47,17 +48,32 @@ const data = {
                 },
             ],
         },
+        {
+            title: "Workspace",
+            href: "#",
+            role: 'admin',
+            items: [
+                // {
+                //     title: "Packages",
+                //     href: "/packages",
+                //     icon: Package
+                // },
+                {
+                    title: "Users",
+                    href: "/users",
+                    isActive: true,
+                    icon: UsersRound
+                },
+                {
+                    title: "เงินเข้า",
+                    href: "/user/payment",
+                    isActive: true,
+                    icon: BanknoteArrowUp
+                },
+            ],
+        },
     ],
 }
-
-type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
-    title?: string
-};
-
-export function AppSidebar({ title, children, ...props }: AppSidebarProps) {
-    const { user } = usePage();
-
-    console.log(user);
 
     return (
         <SidebarProvider {...props}>
@@ -82,25 +98,31 @@ export function AppSidebar({ title, children, ...props }: AppSidebarProps) {
                 </SidebarHeader>
                 <SidebarContent>
                     {/* We create a SidebarGroup for each parent. */}
-                    {data.navMain.map((item) => (
-                        <SidebarGroup key={item.title}>
-                            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-                            <SidebarGroupContent>
-                                <SidebarMenu>
-                                    {item.items.map((item) => (
-                                        <SidebarMenuItem key={item.title}>
-                                            <Link to={item.href}>
-                                                <SidebarMenuButton tooltip={item.title} className="cursor-pointer">
-                                                    {item.icon && <item.icon />}
-                                                    <span>{item.title}</span>
-                                                </SidebarMenuButton>
-                                            </Link>
-                                        </SidebarMenuItem>
-                                    ))}
-                                </SidebarMenu>
-                            </SidebarGroupContent>
-                        </SidebarGroup>
-                    ))}
+                    {data.navMain.map((item) => {
+                        if(item.role == '' || item.role == 'user') {item.role = user?.role || ''}
+                        
+                        if(item.role == user?.role){
+                            return (
+                                <SidebarGroup key={item.title}>
+                                    <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+                                    <SidebarGroupContent>
+                                        <SidebarMenu>
+                                            {item.items.map((item) => (
+                                                <SidebarMenuItem key={item.title}>
+                                                    <Link to={item.href}>
+                                                        <SidebarMenuButton tooltip={item.title} className="cursor-pointer">
+                                                            {item.icon && <item.icon />}
+                                                            <span>{item.title}</span>
+                                                        </SidebarMenuButton>
+                                                    </Link>
+                                                </SidebarMenuItem>
+                                            ))}
+                                        </SidebarMenu>
+                                    </SidebarGroupContent>
+                                </SidebarGroup>
+                            );
+                        }
+                    })}
                 </SidebarContent>
             </Sidebar>
             <SidebarInset>

@@ -10,6 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
     
     session_start();
 }
+date_default_timezone_set('Asia/Bangkok');
 
 require_once 'vendor/autoload.php';
 require_once 'core/cors.php';
@@ -33,6 +34,7 @@ use App\Controllers\Apis\SessionController;
 use App\Controllers\Apis\UserController;
 use App\Controllers\Apis\LiveScoreApiController;
 use App\Controllers\Apis\PointsApiController;
+use App\Controllers\Apis\TransApiController;
 
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -68,16 +70,25 @@ $router->post('/register ', [AuthController::class, 'store'], ['log']);
 $router->get('/session', [SessionController::class, 'show'], ['log', 'auth']);
 // User routes
 $router->get('/users', [UserController::class, 'show'], ['log', 'auth', 'admin']);
+$router->get('/user/{id}', [UserController::class, 'onec'], ['log', 'auth', 'admin']);
+$router->patch('/user/update', [UserController::class, 'update'], ['log', 'auth', 'admin']);
 
 
 
-$router->get('/live/live_score ', [LiveScoreApiController::class, 'LiveScore'], ['log']);
-$router->get('/live/match/event', [LiveScoreApiController::class, 'event'], ['log']);
+$router->get('/match/live/live_score ', [LiveScoreApiController::class, 'LiveScore'], ['log']);
+$router->get('/match/event', [LiveScoreApiController::class, 'event'], ['log']);
+$router->get('/match/history', [LiveScoreApiController::class, 'history'], ['log']);
 $router->get('/flag', [LiveScoreController::class, 'showFlag'], ['log']);
 
 
 
 $router->get('/package-points', [PointsApiController::class, 'show'], ['log', 'auth']);
+$router->get('/package-points/{id}', [PointsApiController::class, 'update'], ['log', 'auth']);
+
+
+$router->get('/transactions', [TransApiController::class, 'showAll'], ['log', 'auth', 'admin']);
+$router->post('/transactions', [TransApiController::class, 'update'], ['log', 'auth']);
+$router->get('/transaction/{id}', [TransApiController::class, 'show'], ['log', 'auth']);
 
 // $router->get('/users/{id}', [UserController::class, 'show'], ['log']);
 // $router->post('/users', [UserController::class, 'store'], ['log']);

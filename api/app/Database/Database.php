@@ -31,6 +31,7 @@ class Database
             'prefix' => env('DB_PREFIX', ''),
             'strict' => true,
             'engine' => null,
+            'timezone'  => '+07:00'
         ], 'mysql');
 
         // Make this Capsule instance available globally
@@ -42,7 +43,7 @@ class Database
 
     public function getConnection()
     {
-        return Capsule::connection();
+        return Capsule::connection()->statement("SET time_zone = '+07:00'");
     }
 
     public function query($sql, $bindings = [])

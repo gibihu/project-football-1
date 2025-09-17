@@ -33,6 +33,7 @@ class LiveScoreController extends BaseController
             }
             return false;
         }catch(\Exception $e){
+            throw $e;
             return false;
         }
     }
@@ -126,14 +127,14 @@ class LiveScoreController extends BaseController
                 }
                 
                 // เช็คเวลาว่าผ่านมากกว่า 1 นาที และไม่มีใครกำลังเรียก API อยู่
-                $updated_at = new \DateTime($match->updated_at);
-                $now = new \DateTime();
-                $diffInMinutes = ($now->getTimestamp() - $updated_at->getTimestamp()) / 60;
+                $updated_at = Carbon::parse($match->updated_at)->format('Y-m-d H:i');
+                $now = Carbon::now()->format('Y-m-d H:i');
                 
                 // ถ้ายังไม่เกิน 1 นาที หรือมีคนกำลังเรียก API อยู่ ให้ return ข้อมูลเดิม
-                if ($diffInMinutes < 1 || $match->is_updating == 1) {
+                if ($updated_at == $now || $match->is_updating == 1) {
                     return $item;
                 }
+                $match->update(['is_updating' => 1]);
             }else{
                 $match = MatchEvent::create([
                     'match_id' => $match_id,
@@ -156,7 +157,7 @@ class LiveScoreController extends BaseController
                     
                     if ($data && $data->success) {
                         // เช็คว่า data มีข้อมูลจริงๆ หรือไม่
-                        if (!empty($data->data) && $data->data != new stdClass()) {
+                        if (!empty($data->data)) {
                             // อัพเดทข้อมูลและยกเลิกสถานะ updating
                             $match->update([
                                 'json' => json_encode($data->data),
@@ -171,10 +172,7 @@ class LiveScoreController extends BaseController
 
                 // ถ้า API ไม่สำเร็จ ยกเลิกสถานะ updating
                 $match->update(['is_updating' => 0]);
-                
-                // return ข้อมูลเดิมถ้ามี
-                $item = json_decode($match->json, true);
-                return $item;
+                return json_decode($match->json);
                 
             } catch (\Exception $apiException) {
                 // ถ้าเกิดข้อผิดพลาดในการเรียก API ยกเลิกสถานะ updating
@@ -186,6 +184,31 @@ class LiveScoreController extends BaseController
             error_log($e);
             throw $e;
             return $e;
+        }
+    }
+
+    public static function HistoryScore($page = 1){
+        
+        try{
+            $client = new Client();
+            $API_KEY = env('LIVE_SCORE_API_KEY');
+            $API_SECRET = env('LIVE_SCORE_API_SECRET');
+            $LANG = env('APP_LOCALE');
+            $now = Carbon::now()->format('Y-m-d');
+            $twoWeeksAgo = Carbon::now()->subWeeks(2)->format('Y-m-d');
+            
+            $url = "https://livescore-api.com/api-client/matches/history.json?from=$twoWeeksAgo&to=$now&page=$page&key=$API_KEY&secret=$API_SECRET&lang=$LANG";
+            $response = $client->get($url);
+            
+            // ตรวจสอบสถานะ
+            if ($response->getStatusCode() === 200) {
+                $data = json_decode($response->getBody()->getContents());
+                return $data;
+            }
+            return false;
+        }catch(\Exception $e){
+            throw $e;
+            return false;
         }
     }
 }

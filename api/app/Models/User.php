@@ -132,4 +132,10 @@ class User extends BaseModel
         // ดึงค่าจาก wallet แต่ถ้าไม่มีให้เป็น 0
         return optional($this->wallet)->points ?? 0;
     }
+
+    // join transaction
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
 }
