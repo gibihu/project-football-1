@@ -5,7 +5,7 @@ export interface User {
     name: string;
     username: string;
     point: number;
-    role?: string;
+    role: string;
     tier?: string;
     exp?: number;
 }

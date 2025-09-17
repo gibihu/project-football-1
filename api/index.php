@@ -51,8 +51,8 @@ $request = new CustomRequest($symfonyRequest);
 $router = new Router();
 
 // Register middlewares
-$router->middleware('auth', [AuthMiddleware::class, 'handle']);
 $router->middleware('admin', [AdminMiddleware::class, 'handle']);
+$router->middleware('auth', [AuthMiddleware::class, 'handle']);
 $router->middleware('log', [LogMiddleware::class, 'handle']);
 $router->middleware('csrf', [CsrfMiddleware::class, 'handle']);
 
@@ -86,9 +86,10 @@ $router->get('/package-points', [PointsApiController::class, 'show'], ['log', 'a
 $router->get('/package-points/{id}', [PointsApiController::class, 'update'], ['log', 'auth']);
 
 
-$router->get('/transactions', [TransApiController::class, 'showAll'], ['log', 'auth', 'admin']);
+$router->get('/transactions', [TransApiController::class, 'showAll'], ['log', 'auth']);
 $router->post('/transactions', [TransApiController::class, 'update'], ['log', 'auth']);
 $router->get('/transaction/{id}', [TransApiController::class, 'show'], ['log', 'auth']);
+$router->patch('/transaction/{id}', [TransApiController::class, 'update_onec'], ['log', 'auth']);
 
 // $router->get('/users/{id}', [UserController::class, 'show'], ['log']);
 // $router->post('/users', [UserController::class, 'store'], ['log']);

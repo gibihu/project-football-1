@@ -7,6 +7,7 @@ import type { PackType } from "@/types/global";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { DraggableList } from "./components/list-drag";
+import AdminLayout from "@/layout/admin-layout";
 
 const API_URL: string = import.meta.env.VITE_API_URL;
 export default function PackagesDashboard() {
@@ -34,11 +35,11 @@ export default function PackagesDashboard() {
     }, []);
     
     return (
-        <AuthLayout>
+        <AdminLayout>
             <Head title="packages" />
             <AppSidebar title="packages">
                 <DraggableList items={items} />
             </AppSidebar>
-        </AuthLayout>
+        </AdminLayout>
     )
 }

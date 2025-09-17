@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     amount          DECIMAL(12,2) NOT NULL,            -- ยอดเงินที่ต้องจ่าย
     points          DECIMAL(12) NOT NULL,            -- ยอดเงินที่ต้องจ่าย
     currency        VARCHAR(10) NOT NULL DEFAULT 'THB',-- รองรับหลายสกุลเงินในอนาคต
-    status          ENUM('pending', 'awaiting_approval', 'approved', 'rejected', 'failed', 'refunded') NOT NULL DEFAULT 'pending',
+    status          ENUM('pending', 'cancle', 'awaiting_approval', 'approved', 'rejected', 'failed', 'refund', 'refunded') NOT NULL DEFAULT 'pending',
     slip_url        VARCHAR(255) NULL,                 -- หลักฐานการโอน (ถ้าเป็น manual)
     paid_at         TIMESTAMP NULL,                    -- เวลาที่ชำระเงิน (จริง)
     approved_at     TIMESTAMP NULL,                    -- เวลาที่แอดมินกดอนุมัติ
@@ -111,6 +111,20 @@ CREATE TABLE IF NOT EXISTS transactions (
     gateway_txn_id  VARCHAR(100) NULL,                 -- transaction id ของ gateway
     raw_response    JSON NULL,                         -- เก็บ response ดิบจาก gateway
 
-    CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_transactions_package FOREIGN KEY (package_id) REFERENCES packages(id)
+    CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS uploadfiles(
+    id BIGINT(20) UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    root TEXT NOT NULL,
+    path TEXT NOT NULL,
+    name TEXT NOT NULL,
+    type VARCHAR(10) NOT NULL DEFAULT 'image',
+    source_type VARCHAR(20),
+    source_id CHAR(36) NOT NULL,
+    status ENUM('unused', 'active', 'pending', 'deleted') NOT NULL DEFAULT 'active',
+
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button";
 import { CardDescription } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import AuthLayout from "@/layout/auth-layouy";
+import { csrf } from "@/middlewares/CsrfMiddleware";
 import type { TransactionType } from "@/types/global";
+import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 
@@ -15,6 +17,7 @@ export default function PayMentPage() {
     const { id } = useParams();
     const [isFetch, setIsFetch] = useState<boolean>(true);
     const [data, setData] = useState<TransactionType>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,6 +44,10 @@ export default function PayMentPage() {
         fetchData();
     }, [id]);
 
+    function handlePaid(){
+        navigate('/payment/upload/'+id);
+    }
+
 
     return (
         <AuthLayout>
@@ -57,9 +64,15 @@ export default function PayMentPage() {
                                     <p><span className="text-muted-foreground">จำนวนเงิน:</span> {data?.amount + ' ' + data?.currency}.</p>
                                     <p><span className="text-muted-foreground">พอยท์ที่จะได้รับ:</span> {data?.points} พอยท์</p>
                                 </div>
-                                <Button variant="primary" className="shadow-xl">จ่ายเงินเสร็จแล้ว</Button>
+                                <Button variant="primary" className="shadow-xl" onClick={handlePaid} disabled={isFetch}>
+                                    {isFetch && <LoaderCircle  className="animate-spin size-4"/>}
+                                    จ่ายเงินเสร็จแล้ว
+                                </Button>
                                 <Link to={'/pack-point'}>
-                                    <Button variant="outline" className="w-full  shadow-xl">กลับไปเลือกอีกครั้ง</Button>
+                                    <Button variant="outline" className="w-full  shadow-xl" disabled={isFetch}>
+                                        {isFetch && <LoaderCircle  className="animate-spin size-4"/>}
+                                        กลับไปเลือกอีกครั้ง
+                                    </Button>
                                 </Link>
                                 <Tooltip>
                                     <TooltipTrigger>

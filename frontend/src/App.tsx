@@ -16,6 +16,7 @@ import PackagesDashboard from './pages/dashboard/admins/package';
 import EditUser from './pages/dashboard/admins/edit-user';
 import PayMentPage from './pages/dashboard/payment';
 import UserPaymentPage from './pages/dashboard/admins/user-payment';
+import PaymentUploadPage from './pages/dashboard/payment-upload-page';
 
 function App() {
   return (
@@ -33,13 +34,14 @@ function App() {
           <Route path="/pack-point" element={<PackPointPage />} />
 
           {/* <Route path="/user/:id" element={<EditUser />} /> */}
-          <Route path="/packages" element={<PackagesDashboard />} />
+          <Route path="/payment/upload/:id" element={<PaymentUploadPage />} />
           <Route path="/payment/:id" element={<PayMentPage />} />
 
          {/* admin  */}
           <Route path="/users" element={<UsersDashboard />} />
           <Route path="/user/payment" element={<UserPaymentPage />} />
           <Route path="/user/payment/:id" element={<UserPaymentPage />} />
+          <Route path="/packages" element={<PackagesDashboard />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

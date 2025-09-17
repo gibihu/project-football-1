@@ -17,18 +17,22 @@ class Request
         }
     }
 
-    public function all(): array
+    public function all(): \stdClass
     {
-        return array_merge(
+        $data = array_merge(
             $this->request->query->all(),
             $this->request->request->all(),
             $this->json
         );
+
+        // แปลง array -> stdClass
+        return json_decode(json_encode($data));
     }
 
     public function input(string $key, $default = null)
     {
-        return $this->all()[$key] ?? $default;
+        $all = $this->all();
+        return $all->$key ?? $default;
     }
     public function query(): array
     {

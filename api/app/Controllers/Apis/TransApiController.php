@@ -5,6 +5,7 @@ namespace App\Controllers\Apis;
 use App\Controllers\BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Carbon\Carbon;
+use Exception;
 
 
 use App\Core\Auth;
@@ -87,14 +88,70 @@ class TransApiController extends BaseController{
         }
     }
 
-    public function showAll(){
+    public function showAll(Request $request){
         try{
-            $trans = Transaction::with('user')->where('status', 'awaiting_approval')->get();
+            $user = Auth::user();
+            $req = $request->query();
+            $type = $user->role == 'admin' ? (isset($req['type']) ? $req['type'] : 'user') : 'user' ;
+            if($type == 'admin') {$trans = Transaction::with('user')->whereIn('status', ['awaiting_approval', 'refund', 'approved'])->orderBy('created_at', 'DESC')->get();}
+            else {$trans = Transaction::with('user')->where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();}
             return response([
                 'message' => 'สำเร็จ',
                 'data' => $trans,
                 'code' => 200
             ], 200)->json();
+        }catch (\Exception $e) {
+            $response = [
+                'message' => 'มีบางอย่างผิดพลาด โปรดลองอีกครั้งในภายหลัง',
+                'code' => 500,
+            ];
+            if(env('APP_DEBUG')) $response['debug'] = [
+                'message' => $e->getMessage(),
+                'request' => $request->all(),
+            ];
+            return response($response, 500)->json();
+        }
+    }
+    
+    public function update_onec(Request $request, $id){
+        try{
+            $req = $request->all();
+            $status = $req->status;
+            $user = Auth::user();
+            if(!isset($id)){
+                throw new Exception("ไม่สามารถดำเนินการได้!");
+            }
+
+            if($user->role == 'admin'){
+                $allowedStatuses = ['pending', 'cancle', 'awaiting_approval','approved', 'rejected'];
+            }else{
+                $allowedStatuses = ['pending', 'cancle', 'awaiting_approval'];
+            }
+
+            $update = [
+                'status' => $status
+            ];
+            if(in_array($status, $allowedStatuses)){
+                if(!Transaction::where('id', $id)->update($update)) throw new Exception("ไม่สามารถดำเนินการได้!");
+                
+                return response([
+                    'message' => 'สำเร็จ',
+                    'data' => $status,
+                    'code' => 200
+                ], 200)->json();
+            }
+
+            $response = [
+                'message' => 'มีบางอย่างผิดพลาด โปรดลองอีกครั้งในภายหลัง',
+                'code' => 403,
+            ];
+            if(env('APP_DEBUG')) $response['debug'] = [
+                'request' => $request->all(),
+                'status' => $status,
+                'allow' => $allowedStatuses
+            ];
+            return response($response, 403)->json();
+
         }catch (\Exception $e) {
             $response = [
                 'message' => 'มีบางอย่างผิดพลาด โปรดลองอีกครั้งในภายหลัง',

@@ -6,15 +6,15 @@ import { useEffect, type JSX } from "react";
 import { Navigate } from "react-router-dom";
 
 function AuthMiddleware({ children }: { children?: JSX.Element }) {
-  
+
   const fetchUser = usePage((s) => s.fetchUser);
   useEffect(() => { fetchUser() }, []);
   const { user, loading } = usePage();
 
   if (loading) {
-    return(
+    return (
       <div className="w-screen h-screen flex justify-center items-center">
-        <LoaderCircle className="animate-spin size-10"/>
+        <LoaderCircle className="animate-spin size-10" />
       </div>
     ); // หรือ spinner ก็ได้
   }
@@ -26,4 +26,4 @@ function AuthMiddleware({ children }: { children?: JSX.Element }) {
   return children;
 }
 
-export {AuthMiddleware};
+export { AuthMiddleware };

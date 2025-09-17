@@ -13,9 +13,9 @@ function ShortName(name: string): string {
     }
 }
 
-function EventTrans(event: string): string{
+function EventTrans(event: string): string {
     let text = '';
-    switch(event){
+    switch (event) {
         case 'GOAL':
             text = 'ทำประตู';
             break;
@@ -38,7 +38,64 @@ function EventTrans(event: string): string{
     return text;
 }
 
+function timeDiff(futureDate: string | Date): string {
+    const now: Date = new Date();
+    const future: Date = typeof futureDate === "string" ? new Date(futureDate) : futureDate;
+
+    // คำนวณส่วนต่าง (มิลลิวินาที)
+    let diffMs: number = future.getTime() - now.getTime();
+
+    if (diffMs < 0) {
+        return "เวลาที่กำหนดผ่านมาแล้ว";
+    }
+
+    const days: number = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    diffMs -= days * (1000 * 60 * 60 * 24);
+
+    const hours: number = Math.floor(diffMs / (1000 * 60 * 60));
+    diffMs -= hours * (1000 * 60 * 60);
+
+    const minutes: number = Math.floor(diffMs / (1000 * 60));
+    diffMs -= minutes * (1000 * 60);
+
+    const seconds: number = Math.floor(diffMs / 1000);
+
+    return `${days} วัน ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`;
+}
+
+function timeDiffRounded(futureDate: string | Date): string {
+    const now: Date = new Date();
+    const future: Date = typeof futureDate === "string" ? new Date(futureDate) : futureDate;
+
+    let diffMs: number = future.getTime() - now.getTime();
+
+    if (diffMs <= 0) {
+        return "เวลาที่กำหนดผ่านมาแล้ว";
+    }
+
+    const days: number = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (days > 0) {
+        return `${days} ว.`;
+    }
+
+    const hours: number = Math.floor(diffMs / (1000 * 60 * 60));
+    if (hours > 0) {
+        return `${hours} ชม.`;
+    }
+
+    const minutes: number = Math.floor(diffMs / (1000 * 60));
+    if (minutes > 0) {
+        return `${minutes} น.`;
+    }
+
+    const seconds: number = Math.floor(diffMs / 1000);
+    return `${seconds} วิ.`;
+}
+
+
 export {
     ShortName,
-    EventTrans
+    EventTrans,
+    timeDiff,
+    timeDiffRounded,
 }

@@ -1,5 +1,6 @@
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -27,19 +28,19 @@ export default function SelectPackpoint({ onChange, onSubmit, disabled }: Select
     const [isFetch, setIsFetch] = useState<boolean>(true);
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-    useEffect(()=>{
-        if(!selected) setIsDisabled(true);
-        if(disabled) setIsDisabled(true);
-        if(selected) setIsDisabled (false);
+    useEffect(() => {
+        if (!selected) setIsDisabled(true);
+        if (disabled) setIsDisabled(true);
+        if (selected) setIsDisabled(false);
     }, [disabled, selected]);
 
     const handleSelect = (id: string) => {
-        console.log(id);
-        if(selected == id){
+        // console.log(id);
+        if (selected == id) {
             setSelected('');
             onChange?.('');
             setIsSelected(false);
-        }else{
+        } else {
             setSelected(id);
             onChange?.(id);
             setIsSelected(true);
@@ -51,15 +52,15 @@ export default function SelectPackpoint({ onChange, onSubmit, disabled }: Select
     };
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchData = async () => {
             setIsFetch(true);
             const res = await fetch(`${API_URL}/package-points`, { credentials: "include" });
             const result = await res.json();
-            if(result.code == 200){
+            if (result.code == 200) {
                 const data = result.data;
                 setItems(data);
-            }else{
+            } else {
                 const errors = result;
                 toast.error(result.message, { description: errors.detail || result.code || '' });
             }
@@ -77,7 +78,7 @@ export default function SelectPackpoint({ onChange, onSubmit, disabled }: Select
                 <div className="flex justify-center items-center h-10 w-full">
                     <LoaderCircle className="animate-spin" />
                 </div>
-            ): (
+            ) : (
                 <>
                     <div className="grid grid-cols-4 gap-2">
                         {items.map((item, index) => (
@@ -91,14 +92,37 @@ export default function SelectPackpoint({ onChange, onSubmit, disabled }: Select
                         ))}
                     </div>
 
-                    <Button
+                    {/* <Button
                         onClick={handleSubmit}
                         disabled={isDisabled}
                         variant="primary"
                         className="w-full"
                     >
                         เลือก
-                    </Button>
+                    </Button> */}
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                disabled={isDisabled}
+                                variant="primary"
+                                className="w-full"
+                            >
+                                เลือก
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>คุณแน่ใจไหม</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    การสั่งซื้อของคุณจะเริ่มดำเนินการ
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>ปิด</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleSubmit}>ยืนยัน</AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </>
             )}
         </div>
@@ -106,10 +130,10 @@ export default function SelectPackpoint({ onChange, onSubmit, disabled }: Select
 }
 
 
-function CardPoints({item, selected = false}:{item:PackageType, selected?: boolean}) {
+function CardPoints({ item, selected = false }: { item: PackageType, selected?: boolean }) {
     return (
         <>
-            <Card className={cn('cursor-pointer',selected ? 'border-yellow-600' : '')}>
+            <Card className={cn('cursor-pointer', selected ? 'border-yellow-600' : '')}>
                 <CardHeader className="flex items-end justify-center">
                     <CardTitle className="text-yellow-600 fonct-bold text-4xl">{item.points}</CardTitle>
                     <CardDescription className="text-xs">พอยท์</CardDescription>

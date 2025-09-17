@@ -1,6 +1,7 @@
 
 import { Head } from "@/components/app-head";
 import { AppSidebar } from "@/components/app-sidebar";
+import AdminLayout from "@/layout/admin-layout";
 import AuthLayout from "@/layout/auth-layouy";
 import type { User } from "@/types/user";
 import { useEffect, useState } from "react";
@@ -34,11 +35,11 @@ export default function EditUser() {
     }, []);
     
     return (
-        <AuthLayout>
+        <AdminLayout>
             <Head title="Edit" />
             <AppSidebar title="User">
                 {!isLoading && user?.name}
             </AppSidebar>
-        </AuthLayout>
+        </AdminLayout>
     )
 }
