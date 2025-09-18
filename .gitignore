@@ -61,6 +61,6 @@ coverage/
 
 # dynamically generated files
 api/app/logs/
-api/public/storage/
+api/public/storage/uploads/users
 api/jsno_data/
 
