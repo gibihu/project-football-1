@@ -29,11 +29,12 @@ CREATE TABLE IF NOT EXISTS wallet (
 CREATE TABLE IF NOT EXISTS wallet_history (
     id CHAR(36) PRIMARY KEY, -- UUID ของรายการ
     wallet_id CHAR(36) NOT NULL,
-    change_amount BIGINT NOT NULL, -- เพิ่มเป็นบวก ลดเป็นลบ
-    type ENUM('add','subtract') NOT NULL,
+    change_amount DECIMAL(12,2) NOT NULL DEFAULT 0, -- เพิ่มเป็นบวก ลดเป็นลบ
+    role ENUM('add','subtract') NOT NULL DEFAULT 'subtract',
+    type ENUM('used', 'topup', 'removed', 'income', 'bonus') NOT NULL DEFAULT 'bonus',
     description VARCHAR(255), -- เหตุผลหรือรายละเอียด
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (wallet_id) REFERENCES wallet(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -102,7 +103,8 @@ CREATE TABLE IF NOT EXISTS transactions (
     slip_url        VARCHAR(255) NULL,                 -- หลักฐานการโอน (ถ้าเป็น manual)
     paid_at         TIMESTAMP NULL,                    -- เวลาที่ชำระเงิน (จริง)
     approved_at     TIMESTAMP NULL,                    -- เวลาที่แอดมินกดอนุมัติ
-    expired_at      TIMESTAMP NULL,                    -- เวลาที่แอดมินกดอนุมัติ
+    admin_id        CHAR(36) NOT NULL,                 -- เแอดมินที่อนุมัติ
+    expired_at      TIMESTAMP NULL,                    --วันหมดอายุ
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
@@ -111,7 +113,8 @@ CREATE TABLE IF NOT EXISTS transactions (
     gateway_txn_id  VARCHAR(100) NULL,                 -- transaction id ของ gateway
     raw_response    JSON NULL,                         -- เก็บ response ดิบจาก gateway
 
-    CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT fk_transactions_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_transactions_admin FOREIGN KEY (admin_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 

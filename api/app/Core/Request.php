@@ -22,11 +22,23 @@ class Request
         $data = array_merge(
             $this->request->query->all(),
             $this->request->request->all(),
-            $this->json
+            $this->json,
+            $this->request->files->all()
         );
 
         // แปลง array -> stdClass
         return json_decode(json_encode($data));
+    }
+
+    public function get(): array
+    {
+        $data = array_merge(
+            $this->request->query->all(),
+            $this->request->request->all(),
+            $this->json,
+        );
+
+        return $data;
     }
 
     public function input(string $key, $default = null)
@@ -66,5 +78,10 @@ class Request
     public function getClientIp(): string
     {
         return $this->request->getClientIp();
+    }
+
+    public function file(string $key)
+    {
+        return $this->request->files->get($key) ?? ($_FILES[$key] ?? null);
     }
 }

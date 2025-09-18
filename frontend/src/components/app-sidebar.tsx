@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 import { usePage } from "@/hooks/usePage";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { BanknoteArrowUp, CirclePoundSterling, Package, UsersRound, Wallet } from "lucide-react";
+import { BanknoteArrowUp, CirclePoundSterling, Landmark, Package, UsersRound, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "./ui/separator";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "./ui/breadcrumb";
@@ -32,24 +32,24 @@ export function AppSidebar({ title, children, ...props }: AppSidebarProps) {
 const data = {
     navMain: [
         {
-            title: "Getting Started",
+            title: "พื้นที่สนุกสนาน",
             href: "#",
             role: '',
             items: [
                 {
-                    title: "Wallet",
+                    title: "กระเป๋า",
                     href: "/wallet",
                     icon: Wallet
                 },
                 {
-                    title: "Points",
+                    title: "พอยต์",
                     href: "/pack-point",
                     icon: CirclePoundSterling
                 },
             ],
         },
         {
-            title: "Workspace",
+            title: "พื้นที่ทำงาน",
             href: "#",
             role: 'admin',
             items: [
@@ -59,16 +59,16 @@ const data = {
                 //     icon: Package
                 // },
                 {
-                    title: "Users",
+                    title: "ผู้ใช้",
                     href: "/users",
                     isActive: true,
                     icon: UsersRound
                 },
                 {
-                    title: "เงินเข้า",
+                    title: "ธุรกรรม",
                     href: "/user/payment",
                     isActive: true,
-                    icon: BanknoteArrowUp
+                    icon: Landmark
                 },
             ],
         },

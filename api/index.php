@@ -29,6 +29,7 @@ use App\Middleware\AdminMiddleware;
 
 use App\Controllers\HomeController;
 use App\Controllers\LiveScoreController;
+use App\Controllers\ImageController;
 use App\Controllers\Apis\AuthController;
 use App\Controllers\Apis\SessionController;
 use App\Controllers\Apis\UserController;
@@ -73,6 +74,7 @@ $router->get('/users', [UserController::class, 'show'], ['log', 'auth', 'admin']
 $router->get('/user/{id}', [UserController::class, 'onec'], ['log', 'auth', 'admin']);
 $router->patch('/user/update', [UserController::class, 'update'], ['log', 'auth', 'admin']);
 
+$router->get('/image/{name}', [ImageController::class, 'show'], ['log']);
 
 
 $router->get('/match/live/live_score ', [LiveScoreApiController::class, 'LiveScore'], ['log']);
@@ -88,8 +90,11 @@ $router->get('/package-points/{id}', [PointsApiController::class, 'update'], ['l
 
 $router->get('/transactions', [TransApiController::class, 'showAll'], ['log', 'auth']);
 $router->post('/transactions', [TransApiController::class, 'update'], ['log', 'auth']);
+$router->post('/transaction/upload', [TransApiController::class, 'UplodSlip'], ['log', 'auth']);
 $router->get('/transaction/{id}', [TransApiController::class, 'show'], ['log', 'auth']);
 $router->patch('/transaction/{id}', [TransApiController::class, 'update_onec'], ['log', 'auth']);
+
+$router->patch('/admin/transaction/update', [TransApiController::class, 'adminUpdate'], ['log', 'auth', 'admin']);
 
 // $router->get('/users/{id}', [UserController::class, 'show'], ['log']);
 // $router->post('/users', [UserController::class, 'store'], ['log']);

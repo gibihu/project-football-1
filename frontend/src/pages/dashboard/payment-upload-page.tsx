@@ -14,10 +14,11 @@ const API_URL: string = import.meta.env.VITE_API_URL;
 export default function PaymentUploadPage() {
     const { id } = useParams();
     const [isFetch, setIsFetch] = useState<boolean>(false);
-    const [image, setImage] = useState<File>();
+    const [image, setImage] = useState<File | undefined>(undefined);
     const navigate = useNavigate();
     
-    function handlePaid(file?: File){
+    function handlePaid(){
+        console.log(image);
         const fetchData = async () => {
             try{
                 setIsFetch(true);
@@ -25,26 +26,33 @@ export default function PaymentUploadPage() {
                 if (!csrfToken) {
                     throw new Error('Failed to get CSRF token');
                 }
-                const res = await fetch(`${API_URL}/transaction/${id}`,{
-                    method: 'PATCH',
+                const formData = new FormData();
+                formData.append("status", "awaiting_approval");
+                if(id){
+                    formData.append("id", id);
+                }else{
+                    throw new Error('ไม่พบหมายเลขธุรกรรมนี้');
+                }
+                if (image) {
+                    formData.append("file", image);
+                }else{
+                    throw new Error('ไม่พบไฟล์');
+                }
+                const res = await fetch(`${API_URL}/transaction/upload`,{
+                    method: 'POST',
                     credentials: "include",
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': csrfToken
                     },
-                    body: JSON.stringify({
-                        status: 'awaiting_approval',
-                        image: image,
-                    })
+                    body: formData,
                 });
-                if (res.status == 200) {
-                    const result = await res.json();
+                const result = await res.json();
+                if (result.code == 200) {
                     toast.success(result.message);
+                    // console.log(result);
                     navigate('/pack-point');
                 } else {
-                    const result = await res.json();
-                    const errors = result.errors;
-                    toast.error(result.message, { description: errors.detail || errors.code || '' });
+                    toast.error(result.message, { description: result.code || '' });
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -53,7 +61,7 @@ export default function PaymentUploadPage() {
             }
         }
 
-        if(file !== undefined){
+        if(image !== undefined && image !== null){
             fetchData();
         }else{
             toast.error("โปรดอัพโหลดในเสร็จโอนเงินของคุณ");
@@ -70,7 +78,7 @@ export default function PaymentUploadPage() {
                     
                     <ImageDropInput className="w-80 h-120" optional={false}  onChange={(file) => file ? setImage(file) : setImage(undefined)}/>
                     <div className="flex flex-col gap-2 w-80">
-                        <Button variant="primary" className="w-full" disabled={isFetch || image == undefined} onClick={()=>handlePaid(image || undefined)}>
+                        <Button variant="primary" className="w-full" disabled={isFetch || image == undefined} onClick={()=>handlePaid()}>
                             {isFetch && <LoaderCircle className="animate-spin" />}
                             อัพโหลด
                         </Button>

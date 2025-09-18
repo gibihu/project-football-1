@@ -7,6 +7,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { usePage } from "@/hooks/usePage";
 import AdminLayout from "@/layout/admin-layout";
 import { translateStatus } from "@/lib/transaction.fn";
+import { csrf } from "@/middlewares/CsrfMiddleware";
 import type { TransactionType } from "@/types/global";
 import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
@@ -45,6 +46,48 @@ export default function UserPaymentPage() {
         }
     }, [loading]);
 
+
+
+
+    function handleChange(id: string, status: string){
+        const fetchData = async () => {
+            try {
+                setIsFetch(true);
+                const csrfToken: string = await csrf();
+                if (!csrfToken) {
+                    throw new Error('Failed to get CSRF token');
+                }
+                const res = await fetch(`${API_URL}/admin/transaction/update`, {
+                    method: 'PATCH',
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({
+                        id: id,
+                        status: status,
+                    })
+                });
+                if (res.status == 200) {
+                    const result = await res.json();
+                    toast.success(result.message);
+                } else {
+                    const errors = await res.json();
+                    toast.error(errors.message, { description: errors.code || '' });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            } finally {
+                setIsFetch(false);
+            }
+        }
+        fetchData();
+    }
+
+
+
+
     return (
         <AdminLayout>
             <Head title="User payment" />
@@ -66,7 +109,7 @@ export default function UserPaymentPage() {
                                 <TableRow className="h-16" key={index}>
                                     <TableCell className="">
                                         <TableViewImage item={item}>
-                                            <img className="size-15  rounded-md  object-cover" src="https://scontent.fcnx4-2.fna.fbcdn.net/v/t39.30808-6/465535396_8898901206839277_5920482521751900011_n.jpg?stp=dst-jpg_p130x130_tt6&_nc_cat=110&ccb=1-7&_nc_sid=bd9a62&_nc_ohc=iUmi6qMS5scQ7kNvwERNwcf&_nc_oc=AdlqT0O7UKBme9Joh36Ayiv73tftv4uUco3z8PsWkySKkmhHAT0LSKZg5zt5STt9XQDCq3k9smGiNXD9gWgjWU9C&_nc_zt=23&_nc_ht=scontent.fcnx4-2.fna&_nc_gid=2zC5VYWHUM7Oxn4xuYJBqg&oh=00_AfaDlY-GubOaRp1mlhNrgHPtKT8zMuHiIcTxYMKKs1D1zg&oe=68CFE937" alt="" />
+                                            <img className="size-15  rounded-md  object-cover" src={item.slip_url} alt={item.slip_url} />
                                         </TableViewImage>
                                     </TableCell>
                                     <TableCell className="text-start">
@@ -81,8 +124,8 @@ export default function UserPaymentPage() {
                                     <TableCell className="text-center">{translateStatus(item.status)}</TableCell>
                                     <TableCell className="max-w-20">
                                         <div className="flex gap-2 justify-end">
-                                            <Button variant="destructive">ปฏิเสธ</Button>
-                                            <Button variant='primary'>อนุมัติ</Button>
+                                            <Button variant="destructive" onClick={()=>handleChange(item.id, 'rejected')}>ปฏิเสธ</Button>
+                                            <Button variant='primary' onClick={()=>handleChange(item.id, 'approved')}>อนุมัติ</Button>
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -104,8 +147,8 @@ export function TableViewImage({ item, className, children }: { item: Transactio
                 <DialogHeader>
                     <DialogDescription>
                         <ImageWithSkeleton
-                            src="https://scontent.fcnx4-2.fna.fbcdn.net/v/t39.30808-6/465535396_8898901206839277_5920482521751900011_n.jpg?stp=dst-jpg_p130x130_tt6&_nc_cat=110&ccb=1-7&_nc_sid=bd9a62&_nc_ohc=iUmi6qMS5scQ7kNvwERNwcf&_nc_oc=AdlqT0O7UKBme9Joh36Ayiv73tftv4uUco3z8PsWkySKkmhHAT0LSKZg5zt5STt9XQDCq3k9smGiNXD9gWgjWU9C&_nc_zt=23&_nc_ht=scontent.fcnx4-2.fna&_nc_gid=2zC5VYWHUM7Oxn4xuYJBqg&oh=00_AfaDlY-GubOaRp1mlhNrgHPtKT8zMuHiIcTxYMKKs1D1zg&oe=68CFE937"
-                            alt=''
+                            src={item.slip_url ?? ''}
+                            alt={item.slip_url ?? 'No Image'}
                             title=''
                             className='max-h-[90svh] max-w-[90svw] w-max object-contain'
                         />

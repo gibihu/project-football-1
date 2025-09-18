@@ -56,7 +56,7 @@ class LiveScoreController extends BaseController
                 if ($response->getStatusCode() === 200) {
                     $imageData = $response->getBody()->getContents();
 
-                    $saveDir = __DIR__ . "/../../public/storage/upload/$type/";
+                    $saveDir = __DIR__ . "/../../public/storage/uploads/$type/";
                     if (!is_dir($saveDir)) {
                         mkdir($saveDir, 0755, true);
                     }
@@ -68,10 +68,10 @@ class LiveScoreController extends BaseController
                     Flag::create([
                         'type' => $type,
                         'flag_id' => $id,
-                        'path' => "/storage/upload/$type/$id.png"
+                        'path' => "/storage/uploads/$type/$id.png"
                     ]);
 
-                    return "/storage/upload/$type/$id.png";
+                    return "/storage/uploads/$type/$id.png";
                 }
             } else {
                 // ถ้ามีใน DB → return path

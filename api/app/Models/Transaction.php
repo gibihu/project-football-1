@@ -24,6 +24,7 @@ class Transaction extends BaseModel
         'slip_url',
         'paid_at',
         'approved_at',
+        'admin_id',
         'expired_at',
         'updated_at',
         'created_at',
@@ -35,9 +36,15 @@ class Transaction extends BaseModel
     protected $hidden = [];
 
     public $timestamps = true;
+
     public function user()
     {
         // สมมติว่า transactions มีคอลัมน์ user_id ที่ชี้ไปที่ users.id
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function admin()
+    {
+        // สมมติว่า transactions มีคอลัมน์ user_id ที่ชี้ไปที่ users.id
+        return $this->belongsTo(User::class, 'admin_id', 'id')->select('id', 'name', 'username', 'role');;
     }
 }

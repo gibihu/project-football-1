@@ -7,6 +7,8 @@ use Ramsey\Uuid\Uuid;
 class Wallet extends BaseModel
 {
     protected $table = 'wallet';
+    protected $keyType = 'string';
+    public $incrementing = false;
     
     protected $fillable = [
         'id',
@@ -28,6 +30,6 @@ class Wallet extends BaseModel
     
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

@@ -3,17 +3,18 @@ import { AppSidebar } from "@/components/app-sidebar";
 import AuthLayout from "@/layout/auth-layouy";
 import SelectPackpoint from "./components/pack-point";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { csrf } from "@/middlewares/CsrfMiddleware";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import type { TransactionType } from "@/types/global";
-import { TableViewImage } from "./admins/user-payment";
 import { translateStatus } from "@/lib/transaction.fn";
 import { usePage } from "@/hooks/usePage";
 import { timeDiff, timeDiffRounded } from "@/lib/functions";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
 
 
 const API_URL: string = import.meta.env.VITE_API_URL;
@@ -160,7 +161,7 @@ export default function PackPointPage() {
                                         <TableCell className="">
                                             <TableViewImage item={item}>
                                                 {item.status !== "pending" && item.status !== "cancle" &&
-                                                    <img className="size-15  rounded-md  object-cover" src="https://scontent.fcnx4-2.fna.fbcdn.net/v/t39.30808-6/465535396_8898901206839277_5920482521751900011_n.jpg?stp=dst-jpg_p130x130_tt6&_nc_cat=110&ccb=1-7&_nc_sid=bd9a62&_nc_ohc=iUmi6qMS5scQ7kNvwERNwcf&_nc_oc=AdlqT0O7UKBme9Joh36Ayiv73tftv4uUco3z8PsWkySKkmhHAT0LSKZg5zt5STt9XQDCq3k9smGiNXD9gWgjWU9C&_nc_zt=23&_nc_ht=scontent.fcnx4-2.fna&_nc_gid=2zC5VYWHUM7Oxn4xuYJBqg&oh=00_AfaDlY-GubOaRp1mlhNrgHPtKT8zMuHiIcTxYMKKs1D1zg&oe=68CFE937" alt="" />
+                                                    <img className="size-15  rounded-md  object-cover" src={item.slip_url} alt={item.slip_url} />
                                                 }
                                             </TableViewImage>
                                         </TableCell>
@@ -200,5 +201,26 @@ export default function PackPointPage() {
                 </div>
             </AppSidebar>
         </AuthLayout>
+    );
+}
+
+
+export function TableViewImage({ item, className, children }: { item: TransactionType, className?: string, children?: ReactNode }) {
+    return (
+        <Dialog>
+            <DialogTrigger className={className}>{children}</DialogTrigger>
+            <DialogContent className="max-h-svh max-w-[90svw] w-max sm:max-w-auto">
+                <DialogHeader>
+                    <DialogDescription>
+                        <ImageWithSkeleton
+                            src={item.slip_url ?? ''}
+                            alt={item.slip_url ?? 'No Image'}
+                            title=''
+                            className='max-h-[90svh] max-w-[90svw] w-max object-contain'
+                        />
+                    </DialogDescription>
+                </DialogHeader>
+            </DialogContent>
+        </Dialog>
     );
 }
