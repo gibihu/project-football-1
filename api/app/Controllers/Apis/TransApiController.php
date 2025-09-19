@@ -96,8 +96,8 @@ class TransApiController extends BaseController{
             $user = Auth::user();
             $req = $request->query();
             $type = $user->role == 'admin' ? (isset($req['type']) ? $req['type'] : 'user') : 'user' ;
-            if($type == 'admin') {$trans = Transaction::with('user')->whereIn('status', ['awaiting_approval'])->orderBy('created_at', 'DESC')->get();}
-            else {$trans = Transaction::with('user')->where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();}
+            if($type == 'admin') {$trans = Transaction::with('user')->whereIn('status', ['awaiting_approval'])->orderBy('updated_at', 'ASC')->get();}
+            else {$trans = Transaction::with('user')->where('user_id', $user->id)->orderBy('updated_at', 'DESC')->get();}
             return response([
                 'message' => 'สำเร็จ',
                 'data' => $trans,
@@ -249,6 +249,8 @@ class TransApiController extends BaseController{
                     case 'approved':
                         $tranDB = Transaction::where('id', $tran_id)->first();
                         if($tranDB){
+                            if($tranDB->status == 'approved' || $tranDB->status == 'rejected') { throw new Exception("ไม่สามารถบันทึกซ้ำได้"); }
+
                             $tranDB->update([
                                 'status' => $status,
                                 'admin_id' => $user->id,
@@ -268,16 +270,20 @@ class TransApiController extends BaseController{
                         throw new Exception("อนุมัติไม่ได้");
                         break;
                     case 'rejected':
-                        $update = Transaction::where('id', $tran_id)->update([
-                            'status' => $status,
-                            'admin_id' => $user->id,
-                        ]);
-                        if($update){
-                            return response([
-                                'message' => 'สำเร็จ',
-                                'data' => $update,
-                                'code' => 200
-                            ], 200)->json();
+                        $tranDB = Transaction::where('id', $tran_id)->first();
+                        if($tranDB){
+                            if($tranDB->status == 'approved' || $tranDB->status == 'rejected') { throw new Exception("ไม่สามารถบันทึกซ้ำได้"); }
+                            $tranDB->update([
+                                'status' => $status,
+                                'admin_id' => $user->id,
+                            ]);
+                            if($tranDB){
+                                return response([
+                                    'message' => 'สำเร็จ',
+                                    'data' => $update,
+                                    'code' => 200
+                                ], 200)->json();
+                            }
                         }
                         throw new Exception("อัพเดทไม่ผ่าน");
                         break;

@@ -2,6 +2,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { EventTrans } from "@/lib/functions";
 import type { EventType } from "@/types/event";
 import type { MatchType } from "@/types/match";
+import { CornerLeftUp, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -27,8 +28,7 @@ export default function MatchEvent({ match_id, main_item }: { match_id: number, 
                 setEvents(data.event);
                 // console.log(data.event);
             } else {
-                const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message);
             }
             setIsLoad(false);
         };
@@ -38,16 +38,16 @@ export default function MatchEvent({ match_id, main_item }: { match_id: number, 
     return (
         <>
             {isLoad ? (
-                <div className="w-full text-center text-ring">กำลังโหลด...</div>
+                <div className="w-full flex justify-center">
+                    <LoaderCircle className="animate-spin size-6" />
+                </div>
             ) : events.length > 0 ? (
                 <Table>
-                    <TableCaption>A list of your recent invoices.</TableCaption>
                     <TableHeader>
                         <TableRow>
                             <TableHead>ทีม</TableHead>
                             <TableHead className="min-w-[100px]">การกระทำ</TableHead>
                             <TableHead>นักเตะ</TableHead>
-                            <TableHead>จ่าย</TableHead>
                             <TableHead>นาทีที่</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -58,13 +58,19 @@ export default function MatchEvent({ match_id, main_item }: { match_id: number, 
                                 const away_logo = main_item.away.logo;
                                 const done_logo =  item.home_away == 'h' ? home_logo : away_logo
                                 return(
-                                    <TableRow key={index}>
+                                    <TableRow key={index} className="group hover:text-accent-foreground">
                                         <TableCell>
                                             <img src={done_logo} alt={done_logo} className="size-6" />
                                         </TableCell>
                                         <TableCell className="font-medium">{EventTrans(item.event)}</TableCell>
-                                        <TableCell>{item.player || '-'}</TableCell>
-                                        <TableCell>{item.info || '-'}</TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-col">
+                                                <p className="text-nowrap">{item.player || '-'}</p>
+                                                <div className="flex items-center gap-1  ps-1  text-ring  group-hover:text-accent-foreground">
+                                                    <CornerLeftUp className="size-3" /><span className="text-xs  cursor-default">{item.info || '-'}</span>
+                                                </div>
+                                            </div>
+                                        </TableCell>
                                         <TableCell>{item.time}</TableCell>
                                     </TableRow>
                                 )

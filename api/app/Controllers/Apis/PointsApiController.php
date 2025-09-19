@@ -18,7 +18,7 @@ class PointsApiController extends BaseController{
 
     public function show(Request $request) {
         try{
-            $points = PackPoints::where('published', 1)->get();
+            $points = PackPoints::where('published', 1)->orderBy('points', 'ASC')->get();
             if($points){
                 return response([
                     'message' => 'สำเร็จ',

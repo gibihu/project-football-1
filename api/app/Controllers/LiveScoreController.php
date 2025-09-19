@@ -122,7 +122,7 @@ class LiveScoreController extends BaseController
                 $item = json_decode($match->json, true);
                 
                 // ถ้าสถานะ FINISHED แล้ว ไม่ต้องเรียก API อีก
-                if (isset($item['status']) && $item['status'] == 'FINISHED') {
+                if ($match->status == 'FINISHED') {
                     return $item;
                 }
                 

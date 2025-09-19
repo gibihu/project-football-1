@@ -17,7 +17,6 @@ import { ShortName } from "@/lib/functions"
 import type { MatchType } from "@/types/match"
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef, type ColumnFiltersState, type SortingState, type VisibilityState } from "@tanstack/react-table"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
 import { toast } from "sonner"
 import { MatchBadge, TableCellViewer } from "./board-score"
 
@@ -39,8 +38,7 @@ export function HistoryScore() {
                 const data = await result.data.match;
                 setmatch(data);
             } else {
-                const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message);
             }
             setIsFetchBoard(false);
         };
@@ -63,7 +61,7 @@ export function HistoryScore() {
                 setmatch(data);
             } else {
                 const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message);
             }
         };
         fetchData();

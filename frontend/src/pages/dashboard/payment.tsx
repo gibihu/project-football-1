@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { CardDescription } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import AuthLayout from "@/layout/auth-layouy";
-import { csrf } from "@/middlewares/CsrfMiddleware";
 import type { TransactionType } from "@/types/global";
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -13,6 +12,7 @@ import { toast } from "sonner";
 
 
 const API_URL: string = import.meta.env.VITE_API_URL;
+const IMG_URL: string = import.meta.env.VITE_IMG_URL;
 export default function PayMentPage() {
     const { id } = useParams();
     const [isFetch, setIsFetch] = useState<boolean>(true);
@@ -32,8 +32,7 @@ export default function PayMentPage() {
                     setData(data);
                 } else {
                     const result = await res.json();
-                    const errors = result.errors;
-                    toast.error(result.message, { description: errors.detail || errors.code || '' });
+                    toast.error(result.message);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -58,7 +57,9 @@ export default function PayMentPage() {
                         <div className="flex flex-col items-center justify-center gap-4">
 
                             <div className="flex flex-col gap-4 max-w-3/4">
-                                <img className="w-full  border  rounded-xl  shadow-xl" src="https://store-images.s-microsoft.com/image/apps.3768.14340978627155335.c3c132d0-b7d3-451e-87e1-eccb331441e5.e65382c2-18b1-4b90-b63e-96e2609f16d3?h=307" alt="qr code" />
+                                <div className="w-full h-full  max-w-100 max-h-100  p-6">
+                                    <img className="w-full  border  rounded-xl  shadow-xl" src="https://blog.tcea.org/wp-content/uploads/2022/05/qrcode_tcea.org-1.png" alt="https://blog.tcea.org/wp-content/uploads/2022/05/qrcode_tcea.org-1.png" />
+                                </div>
                                 <div>
                                     <p><span className="text-muted-foreground">รหัสอ้างอิง:</span> {data?.user_reference}</p>
                                     <p><span className="text-muted-foreground">จำนวนเงิน:</span> {data?.amount + ' ' + data?.currency}.</p>

@@ -1,4 +1,4 @@
-
+import type { WalletType } from './global';
 export interface User {
     no?: number;
     id: string;
@@ -8,4 +8,6 @@ export interface User {
     role: string;
     tier?: string;
     exp?: number;
+    wallet: WalletType;
+    retrieval_at?: string;
 }

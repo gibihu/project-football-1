@@ -1,20 +1,20 @@
 import { Head } from "@/components/app-head";
 import { AppSidebar } from "@/components/app-sidebar";
-import AuthLayout from "@/layout/auth-layouy";
-import SelectPackpoint from "./components/pack-point";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState, type ReactNode } from "react";
-import { toast } from "sonner";
-import { csrf } from "@/middlewares/CsrfMiddleware";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import type { TransactionType } from "@/types/global";
-import { translateStatus } from "@/lib/transaction.fn";
-import { usePage } from "@/hooks/usePage";
-import { timeDiff, timeDiffRounded } from "@/lib/functions";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import ImageWithSkeleton from "@/components/ui/ImageWithSkeleton";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { usePage } from "@/hooks/usePage";
+import AuthLayout from "@/layout/auth-layouy";
+import { formatDateTime, timeDiff, timeDiffRounded } from "@/lib/functions";
+import { translateStatus } from "@/lib/transaction.fn";
+import { csrf } from "@/middlewares/CsrfMiddleware";
+import type { TransactionType } from "@/types/global";
+import { useEffect, useState, type ReactNode } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import SelectPackpoint from "./components/pack-point";
 
 
 const API_URL: string = import.meta.env.VITE_API_URL;
@@ -118,8 +118,7 @@ export default function PackPointPage() {
 
                 } else {
                     const result = await res.json();
-                    const errors = result.errors;
-                    toast.error(result.message, { description: errors.detail || errors.code || '' });
+                    toast.error(result.message);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -150,6 +149,7 @@ export default function PackPointPage() {
                             <TableRow>
                                 <TableHead className="w-[100px]">สลิป</TableHead>
                                 <TableHead className="text-start">รายละเอีบด</TableHead>
+                                <TableHead className="text-center">อนุมัติเวลา</TableHead>
                                 <TableHead className="text-center">สถาณะ</TableHead>
                                 <TableHead className="text-right"></TableHead>
                             </TableRow>
@@ -165,11 +165,14 @@ export default function PackPointPage() {
                                                 }
                                             </TableViewImage>
                                         </TableCell>
-                                        <TableCell className="font-start">
+                                        <TableCell className="text-start">
                                             <div className="flex flex-col">
                                                 <span>เติม {item.points} พอยต์</span>
                                                 <span>ราคา {item.amount} {item.currency}</span>
                                             </div>
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                            <span>{formatDateTime(item.approved_at || '')}</span>
                                         </TableCell>
                                         <TableCell className="text-center">
                                             {item.status == 'pending' ? (

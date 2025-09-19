@@ -39,8 +39,7 @@ export function MatchDashboard() {
                 const data = await result.data.match;
                 setmatch(data);
             } else {
-                const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message);
             }
             setIsFetchBoard(false);
         };
@@ -63,7 +62,7 @@ export function MatchDashboard() {
                 setmatch(data);
             } else {
                 const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message);
             }
         };
         fetchData();

@@ -25,7 +25,6 @@ class User extends BaseModel
     protected $hidden = [
         'password',
         'remember_token',
-        'wallet',
     ];
 
     protected $casts = [

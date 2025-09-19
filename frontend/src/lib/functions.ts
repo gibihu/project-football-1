@@ -91,11 +91,54 @@ function timeDiffRounded(futureDate: string | Date): string {
     const seconds: number = Math.floor(diffMs / 1000);
     return `${seconds} วิ.`;
 }
+function formatDateTime(input: string): string {
+    if (!input) return input;
+    const date = new Date(input.replace(" ", "T"));
+    // แปลง "2025-09-19 09:54:16" → "2025-09-19T09:54:16"
 
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // เดือนเริ่มนับจาก 0
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    // ทำให้ minutes เป็นสองหลัก เช่น 09:05
+    const pad = (n: number) => n.toString().padStart(2, "0");
+
+    return `${day}/${month} ${hours}:${pad(minutes)}`;
+}
+
+
+function isUpper(amount: number) {
+    return amount >= 0 ? true : false;
+}
+
+function timeAgoShort(isoDate?: string): string {
+    if(!isoDate){ return isoDate || '';}
+    const date = new Date(isoDate);
+    const now = new Date();
+
+    const diffMs = now.getTime() - date.getTime();
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+    const diffMonth = Math.floor(diffDay / 30);
+    const diffYear = Math.floor(diffDay / 365);
+
+    if (diffSec < 60) return `${diffSec} วิ`;
+    if (diffMin < 60) return `${diffMin} น.`;
+    if (diffHour < 24) return `${diffHour} ชม.`;
+    if (diffDay < 30) return `${diffDay} วัน`;
+    if (diffMonth < 12) return `${diffMonth} เดือน`;
+    return `${diffYear} ปี`;
+}
 
 export {
     ShortName,
     EventTrans,
     timeDiff,
     timeDiffRounded,
+    formatDateTime,
+    isUpper,
+    timeAgoShort,
 }

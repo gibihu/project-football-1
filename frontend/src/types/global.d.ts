@@ -31,3 +31,23 @@ export interface TransactionType{
     gateway_txn_id?: string;
     raw_response?: string;
 }
+
+
+export interface WalletHistoryType {
+    id: string;
+    wallet_id: string;
+    change_amount: number;
+    role: string;
+    type: string;
+    description?: string;
+    updated_at: string;
+    created_at: string;
+}
+
+export interface WalletType {
+    id: string;
+    points: number;
+    income: number;
+    updated_at: string;
+    created_at: string;
+}

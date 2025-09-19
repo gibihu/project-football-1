@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import AuthLayout from "@/layout/auth-layouy";
 import { csrf } from "@/middlewares/CsrfMiddleware";
 import { LoaderCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -52,7 +52,7 @@ export default function PaymentUploadPage() {
                     // console.log(result);
                     navigate('/pack-point');
                 } else {
-                    toast.error(result.message, { description: result.code || '' });
+                    toast.error(result.message);
                 }
             } catch (error) {
                 console.error('Error:', error);

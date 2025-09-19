@@ -26,7 +26,7 @@ export default function PackagesDashboard() {
                 setItems(data);
             }else{
                 const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message, { description: errors.detail || '' });
             }
             setIsFetch(false);
         };

@@ -1,8 +1,8 @@
 
-import type { MatchType } from "@/types/match"
-import { useEffect, useState } from "react"
-import { toast } from "sonner"
-import { BoardScore } from "./board-score"
+import type { MatchType } from "@/types/match";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { BoardScore } from "./board-score";
 
 const API_URL: string = import.meta.env.VITE_API_URL;
 export function LiveScore() {
@@ -22,7 +22,7 @@ export function LiveScore() {
                 setmatch(data);
             } else {
                 const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message);
             }
             setIsFetchBoard(false);
         };
@@ -45,7 +45,7 @@ export function LiveScore() {
                 setmatch(data);
             } else {
                 const errors = result;
-                toast.error(result.message, { description: errors.detail || result.code || '' });
+                toast.error(result.message);
             }
         };
         fetchData();

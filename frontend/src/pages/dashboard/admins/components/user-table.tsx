@@ -197,15 +197,14 @@ export function UserTable() {
                         <AlertDialog open={isOpen}>
                             <AlertDialogContent>
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                    <AlertDialogTitle>คุณแน่ใจ?</AlertDialogTitle>
                                     <AlertDialogDescription>
-                                        This action cannot be undone. This will permanently delete your account
-                                        and remove your data from our servers.
+                                        คุณต้องการเปลี่ยนบทบาทของ {row.original.username} เป็น {row.original.role == 'user' ? 'แอดมิน' : 'ผู้ใช้'} หรือไม่?
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                    <AlertDialogCancel onClick={()=>{setIsOpen(false); setValue(row.original.role)}}>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={()=>(handdleUpdateRole(row.original.id, value))}>Continue</AlertDialogAction>
+                                    <AlertDialogCancel onClick={()=>{setIsOpen(false); setValue(row.original.role)}}>ยกเลิก</AlertDialogCancel>
+                                    <AlertDialogAction onClick={()=>(handdleUpdateRole(row.original.id, value))}>ยืนยัน</AlertDialogAction>
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>

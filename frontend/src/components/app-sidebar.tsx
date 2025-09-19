@@ -42,7 +42,7 @@ const data = {
                     icon: Wallet
                 },
                 {
-                    title: "พอยต์",
+                    title: "เติมพอยต์",
                     href: "/pack-point",
                     icon: CirclePoundSterling
                 },
@@ -82,7 +82,7 @@ const data = {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton size="lg" asChild>
-                                <a href="#">
+                                <a href="/dashboard">
                                     <Avatar className="rounded-md" >
                                         <AvatarImage src="https://github.com/shadcn.png" />
                                         <AvatarFallback className="uppercase">{user?.username.charAt(0)}{user?.username.charAt(2)}</AvatarFallback>

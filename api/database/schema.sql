@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS wallet (
     id CHAR(36) PRIMARY KEY, -- UUID ของ wallet
     user_id CHAR(36) NOT NULL UNIQUE,
     points BIGINT NOT NULL DEFAULT 0, -- จำนวน point ปัจจุบัน
+    income BIGINT UNSIGNED NOT NULL DEFAULT 0, -- จำนวน point ปัจจุบัน
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS wallet (
 CREATE TABLE IF NOT EXISTS wallet_history (
     id CHAR(36) PRIMARY KEY, -- UUID ของรายการ
     wallet_id CHAR(36) NOT NULL,
-    change_amount DECIMAL(12,2) NOT NULL DEFAULT 0, -- เพิ่มเป็นบวก ลดเป็นลบ
+    change_amount DECIMAL(12) NOT NULL DEFAULT 0, -- เพิ่มเป็นบวก ลดเป็นลบ
     role ENUM('add','subtract') NOT NULL DEFAULT 'subtract',
     type ENUM('used', 'topup', 'removed', 'income', 'bonus') NOT NULL DEFAULT 'bonus',
     description VARCHAR(255), -- เหตุผลหรือรายละเอียด
@@ -75,7 +76,6 @@ CREATE TABLE IF NOT EXISTS match_player (
 
 CREATE TABLE IF NOT EXISTS packages (
     id               CHAR(36) PRIMARY KEY,                -- UUID
-    sort_no INT(11) UNSIGNED NOT NULL UNIQUE,
     points            INT UNSIGNED NOT NULL,               -- จำนวนเหรียญ
     price            DECIMAL(10,2) UNSIGNED NOT NULL,              -- ราคาเป็นบาท
     price_per_points   DECIMAL(4,1) UNSIGNED NOT NULL,               -- ราคา/เหรียญ (เช่น 3.3)
@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS transactions (
     amount          DECIMAL(12,2) NOT NULL,            -- ยอดเงินที่ต้องจ่าย
     points          DECIMAL(12) NOT NULL,            -- ยอดเงินที่ต้องจ่าย
     currency        VARCHAR(10) NOT NULL DEFAULT 'THB',-- รองรับหลายสกุลเงินในอนาคต
+    type            ENUM('deposit', 'withdraw') NOT NULL DEFAULT 'deposit',
     status          ENUM('pending', 'cancle', 'awaiting_approval', 'approved', 'rejected', 'failed', 'refund', 'refunded') NOT NULL DEFAULT 'pending',
     slip_url        VARCHAR(255) NULL,                 -- หลักฐานการโอน (ถ้าเป็น manual)
     paid_at         TIMESTAMP NULL,                    -- เวลาที่ชำระเงิน (จริง)

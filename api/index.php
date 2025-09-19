@@ -10,6 +10,7 @@ if (session_status() === PHP_SESSION_NONE) {
     
     session_start();
 }
+
 date_default_timezone_set('Asia/Bangkok');
 
 require_once 'vendor/autoload.php';
@@ -30,12 +31,14 @@ use App\Middleware\AdminMiddleware;
 use App\Controllers\HomeController;
 use App\Controllers\LiveScoreController;
 use App\Controllers\ImageController;
+use App\Controllers\QrCodeController;
 use App\Controllers\Apis\AuthController;
 use App\Controllers\Apis\SessionController;
 use App\Controllers\Apis\UserController;
 use App\Controllers\Apis\LiveScoreApiController;
 use App\Controllers\Apis\PointsApiController;
 use App\Controllers\Apis\TransApiController;
+use App\Controllers\Apis\WalletApiController;
 
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -64,30 +67,36 @@ $router->get('/csrf-token', function($request) {
         'csrf_token' => csrf_token()
     ]);
 }, ['log']);
+
+// User routes
 $router->post('/login', [AuthController::class, 'login'], ['log']);
 $router->get('/logout', [AuthController::class, 'logout'], ['log']);
 $router->post('/register ', [AuthController::class, 'store'], ['log']);
 // $router->get('/', [HomeController::class, 'hello'], ['log']);
 $router->get('/session', [SessionController::class, 'show'], ['log', 'auth']);
-// User routes
 $router->get('/users', [UserController::class, 'show'], ['log', 'auth', 'admin']);
 $router->get('/user/{id}', [UserController::class, 'onec'], ['log', 'auth', 'admin']);
 $router->patch('/user/update', [UserController::class, 'update'], ['log', 'auth', 'admin']);
+// user wallet
+$router->get('/user/wallet/history', [WalletApiController::class, 'showHistory'], ['log', 'auth']);
 
+
+// image
 $router->get('/image/{name}', [ImageController::class, 'show'], ['log']);
 
-
+// match
 $router->get('/match/live/live_score ', [LiveScoreApiController::class, 'LiveScore'], ['log']);
 $router->get('/match/event', [LiveScoreApiController::class, 'event'], ['log']);
 $router->get('/match/history', [LiveScoreApiController::class, 'history'], ['log']);
 $router->get('/flag', [LiveScoreController::class, 'showFlag'], ['log']);
 
 
-
+// packages
 $router->get('/package-points', [PointsApiController::class, 'show'], ['log', 'auth']);
 $router->get('/package-points/{id}', [PointsApiController::class, 'update'], ['log', 'auth']);
 
 
+// transaction
 $router->get('/transactions', [TransApiController::class, 'showAll'], ['log', 'auth']);
 $router->post('/transactions', [TransApiController::class, 'update'], ['log', 'auth']);
 $router->post('/transaction/upload', [TransApiController::class, 'UplodSlip'], ['log', 'auth']);
@@ -95,6 +104,8 @@ $router->get('/transaction/{id}', [TransApiController::class, 'show'], ['log', '
 $router->patch('/transaction/{id}', [TransApiController::class, 'update_onec'], ['log', 'auth']);
 
 $router->patch('/admin/transaction/update', [TransApiController::class, 'adminUpdate'], ['log', 'auth', 'admin']);
+
+$router->get('/qrcode/transaction/{id}', [QrCodeController::class, 'show'], ['log']);
 
 // $router->get('/users/{id}', [UserController::class, 'show'], ['log']);
 // $router->post('/users', [UserController::class, 'store'], ['log']);

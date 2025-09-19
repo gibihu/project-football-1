@@ -6,7 +6,6 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { usePage } from "@/hooks/usePage";
 
 export default function DashboardHome() {
-
     usePage.getState().fetchUser(true);
     return (
         <AuthLayout>

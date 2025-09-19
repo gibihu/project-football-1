@@ -4,29 +4,33 @@ namespace App\Controllers\Apis;
 
 use App\Controllers\BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Carbon\Carbon;
-use Exception;
 
 
 use App\Core\Request;
-use App\Models\User;
 use App\Core\Auth;
+
+use App\Models\User;
+use App\Models\WalletHistory;
 
 use Ramsey\Uuid\Uuid;
 
-class SessionController extends BaseController{
+class WalletApiController extends BaseController{
 
-    public function show(Request $request) {
+    public function showHistory(Request $request) {
         try{
             if(Auth::check()){
-                $user = Auth::user();
-                $user->retrieval_at = Carbon::now();
-                return response([
-                    'message' => 'สำเร็จ',
-                    'data' => $user,
-                    'code' => 200
-                ], 200)->json();
+                $wallet_id = Auth::user()->wallet->id;
+                $history = WalletHistory::where('wallet_id', $wallet_id)->orderBy('created_at', 'DESC')->get();
+                if($history){
+                    return response([
+                        'message' => 'สำเร็จ',
+                        'data' => $history,
+                        'code' => 200
+                    ], 200)->json();
+                }
             }
+
+            throw new Exception("ไม่สามารถดำเนินการได้!");
         }catch (\Exception $e) {
             $response = [
                 'message' => 'มีบางอย่างผิดพลาด โปรดลองอีกครั้งในภายหลัง',

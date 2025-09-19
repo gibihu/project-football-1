@@ -17,7 +17,6 @@ class Wallet extends BaseModel
     ];
 
     protected $hidden = [
-        'id',
         'user_id',
     ];
 
