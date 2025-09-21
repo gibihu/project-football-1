@@ -188,8 +188,8 @@ class TransApiController extends BaseController{
                             return response([
                                 'message' => 'สำเร็จ',
                                 'data' => $save,
-                                'code' => 200
-                            ], 200)->json();
+                                'code' => 201
+                            ], 201)->json();
                         }else{
                             throw new Exception("ไม่สามารถอัพเดทหลักฐานได้");
                         }

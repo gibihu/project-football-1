@@ -46,28 +46,37 @@ export default function WalletHistoryTable() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    { isLoading ? (
+                    {isLoading ? (
                         <TableRow>
-                            <TableCell  colSpan={2}  className="ps-4">
+                            <TableCell colSpan={2} className="ps-4">
                                 <div className="w-full flex justify-center py-4">
                                     <LoaderCircle className="animate-spin size-8" />
                                 </div>
                             </TableCell>
                         </TableRow>
-                    ): items.map((item, index) => (
-                        <TableRow key={index}>
-                            <TableCell className="ps-4">
-                                <div className="flex flex-col gap-2">
-                                    <p className="font-bold text-md">{TranslateRole(item.type)}</p>
-                                    <div className="flex flex-col gap-1">
-                                        <span className="text-muted-foreground">{item.description}</span>
-                                        <span className="text-border">เมื่อ {timeAgoShort(item.updated_at)}</span>
-                                    </div>
-                                </div>
-                            </TableCell>
-                            <TableCell className={cn('text-right font-bold text-lg pe-4', isUpper(item.change_amount) ? 'text-green-600' : 'text-red-600')}>{(isUpper(item.change_amount) ? '+' : '-' ) + item.change_amount}</TableCell>
-                        </TableRow>
-                    ))}
+                    ) : items.length > 0 ? (
+                            items.map((item, index) => (
+                                <TableRow key={index}>
+                                    <TableCell className="ps-4">
+                                        <div className="flex flex-col gap-2">
+                                            <p className="font-bold text-md">{TranslateRole(item.type)}</p>
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-muted-foreground">{item.description}</span>
+                                                <span className="text-border">เมื่อ {timeAgoShort(item.updated_at)}</span>
+                                            </div>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className={cn('text-right font-bold text-lg pe-4', isUpper(item.change_amount) ? 'text-green-600' : 'text-red-600')}>{(isUpper(item.change_amount) ? '+' : '-') + item.change_amount}</TableCell>
+                                </TableRow>
+                            ))
+                        ): (
+                            <TableRow>
+                                <TableCell colSpan={2} className="text-center py-4 text-muted-foreground">
+                                    ไม่มีข้อมูล
+                                </TableCell>
+                            </TableRow>
+                        )
+                    }
                 </TableBody>
             </Table>
         </Card>
@@ -75,9 +84,9 @@ export default function WalletHistoryTable() {
 }
 
 
-export function TranslateRole(type: string){
+export function TranslateRole(type: string) {
     let text = '';
-    switch(type){
+    switch (type) {
         case 'used':
             text = 'แลกพอยต์';
             break;
@@ -91,7 +100,7 @@ export function TranslateRole(type: string){
             text = 'รายได้';
             break;
         default:
-            text= 'โบนัส';
+            text = 'โบนัส';
     }
 
     return text;

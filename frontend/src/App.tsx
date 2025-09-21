@@ -15,6 +15,9 @@ import WalletPage from './pages/dashboard/wallet';
 import Home from './pages/home';
 import { HistoryScore } from './pages/match/history-score';
 import NotFound from './pages/NotFound';
+import CreatePostPage from './pages/dashboard/create-post';
+import PostsPage from './pages/dashboard/posts-page';
+import PostPage from './pages/post';
 
 function App() {
   return (
@@ -26,11 +29,14 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<RegisPage />} />
+          <Route path="/post/:id" element={<PostPage />} />
           
           <Route path="/dashboard" element={<DashboardHome />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/match/history" element={<HistoryScore />} />
           <Route path="/pack-point" element={<PackPointPage />} />
+          <Route path="/dash/posts" element={<PostsPage />} />
+          <Route path="/dash/create-post" element={<CreatePostPage />} />
 
           {/* <Route path="/user/:id" element={<EditUser />} /> */}
           <Route path="/payment/upload/:id" element={<PaymentUploadPage />} />

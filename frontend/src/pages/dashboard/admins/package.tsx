@@ -6,7 +6,7 @@ import AuthLayout from "@/layout/auth-layouy";
 import type { PackType } from "@/types/global";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { DraggableList } from "./components/list-drag";
+import { DraggableList } from "../../../components/dashboard/admins/list-drag";
 import AdminLayout from "@/layout/admin-layout";
 
 const API_URL: string = import.meta.env.VITE_API_URL;

@@ -39,6 +39,7 @@ use App\Controllers\Apis\LiveScoreApiController;
 use App\Controllers\Apis\PointsApiController;
 use App\Controllers\Apis\TransApiController;
 use App\Controllers\Apis\WalletApiController;
+use App\Controllers\Apis\PostApisController;
 
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -74,6 +75,10 @@ $router->get('/logout', [AuthController::class, 'logout'], ['log']);
 $router->post('/register ', [AuthController::class, 'store'], ['log']);
 // $router->get('/', [HomeController::class, 'hello'], ['log']);
 $router->get('/session', [SessionController::class, 'show'], ['log', 'auth']);
+$router->get('/posts', [PostApisController::class, 'show'], ['log']);
+$router->get('/auth/posts', [PostApisController::class, 'showAuth'], ['log', 'auth']);
+$router->post('/post/create', [PostApisController::class, 'store'], ['log', 'auth']);
+
 $router->get('/users', [UserController::class, 'show'], ['log', 'auth', 'admin']);
 $router->get('/user/{id}', [UserController::class, 'onec'], ['log', 'auth', 'admin']);
 $router->patch('/user/update', [UserController::class, 'update'], ['log', 'auth', 'admin']);

@@ -1,8 +1,8 @@
 import { Head } from "@/components/app-head";
 import { AppSidebar } from "@/components/app-sidebar";
 import AuthLayout from "@/layout/auth-layouy";
-import { WallerChart } from "./components/waller-chart";
-import WalletHistoryTable from "./components/wallet-history-table";
+import { WallerChart } from "../../components/dashboard/waller-chart";
+import WalletHistoryTable from "../../components/dashboard/wallet-history-table";
 
 
 export default function WalletPage() {

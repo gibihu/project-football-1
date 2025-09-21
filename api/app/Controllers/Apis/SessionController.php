@@ -9,8 +9,9 @@ use Exception;
 
 
 use App\Core\Request;
-use App\Models\User;
 use App\Core\Auth;
+
+use App\Models\User;
 
 use Ramsey\Uuid\Uuid;
 

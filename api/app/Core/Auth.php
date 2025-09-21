@@ -75,7 +75,8 @@ class Auth
 
         // Check session first
         if (isset($_SESSION['user_id'])) {
-            return User::find($_SESSION['user_id']);
+            $user = User::with('wallet')->find($_SESSION['user_id']); // โหลด wallet
+            return $user;
         }
 
         // Check remember token if no session

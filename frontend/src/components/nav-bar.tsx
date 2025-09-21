@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import { usePage } from "@/hooks/usePage";
-import { LoaderCircle } from "lucide-react";
+import { CirclePoundSterling, LoaderCircle } from "lucide-react";
 
 
 const API_NAME: string = import.meta.env.VITE_API_NAME;
@@ -9,6 +9,10 @@ const API_NAME: string = import.meta.env.VITE_API_NAME;
 export default function NavBar(){
 
     const { user, loading } = usePage();
+
+    function handlReloadSession(){
+        usePage.getState().fetchUser(true);
+    }
     
     return (
         <>
@@ -18,6 +22,12 @@ export default function NavBar(){
                     {!loading ? user ? (
                         user.role && (
                             <>
+                                <div className="flex gap-2">
+                                    <Button variant='ghost' onClick={handlReloadSession}>
+                                        <CirclePoundSterling className="size-4 text-yellow-600" />
+                                        <span>{user.wallet.points.toLocaleString()}</span>
+                                    </Button>
+                                </div>
                                 <Link to="/dashboard"><Button>Dashboard</Button></Link>
                                 <Link to="/logout"><Button>ออระบบ</Button></Link>
                             </>

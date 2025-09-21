@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 import { usePage } from "@/hooks/usePage";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { BanknoteArrowUp, CirclePoundSterling, Landmark, Package, UsersRound, Wallet } from "lucide-react";
+import { BanknoteArrowUp, CirclePoundSterling, Landmark, NotebookPen, Package, UsersRound, Wallet } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Separator } from "./ui/separator";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList } from "./ui/breadcrumb";
@@ -45,6 +45,11 @@ const data = {
                     title: "เติมพอยต์",
                     href: "/pack-point",
                     icon: CirclePoundSterling
+                },
+                {
+                    title: "ทีเด็ด",
+                    href: "/dash/posts",
+                    icon: NotebookPen
                 },
             ],
         },

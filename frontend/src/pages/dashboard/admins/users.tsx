@@ -1,6 +1,6 @@
 
 import { Head } from "@/components/app-head";
-import { UserTable } from "./components/user-table";
+import { UserTable } from "../../../components/dashboard/admins/user-table";
 import { AppSidebar } from "@/components/app-sidebar";
 import AdminLayout from "@/layout/admin-layout";
 

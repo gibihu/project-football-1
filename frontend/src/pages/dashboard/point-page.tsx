@@ -14,7 +14,7 @@ import type { TransactionType } from "@/types/global";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import SelectPackpoint from "./components/pack-point";
+import SelectPackpoint from "../../components/dashboard/pack-point";
 
 
 const API_URL: string = import.meta.env.VITE_API_URL;

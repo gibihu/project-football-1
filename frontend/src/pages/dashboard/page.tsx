@@ -1,9 +1,8 @@
 
-import AuthLayout from "@/layout/auth-layouy";
 import { Head } from "@/components/app-head";
-import { UserTable } from "./components/user-table";
 import { AppSidebar } from "@/components/app-sidebar";
 import { usePage } from "@/hooks/usePage";
+import AuthLayout from "@/layout/auth-layouy";
 
 export default function DashboardHome() {
     usePage.getState().fetchUser(true);

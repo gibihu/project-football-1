@@ -119,8 +119,6 @@ class User extends BaseModel
         return $this->save();
     }
 
-    protected $appends = ['point']; // เพิ่ม field point อัตโนมัติใน json
-
     public function wallet()
     {
         return $this->hasOne(Wallet::class, 'user_id');

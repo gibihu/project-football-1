@@ -2,7 +2,6 @@
 import { Head } from "@/components/app-head";
 import { AppSidebar } from "@/components/app-sidebar";
 import AdminLayout from "@/layout/admin-layout";
-import AuthLayout from "@/layout/auth-layouy";
 import type { User } from "@/types/user";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";

@@ -26,6 +26,12 @@ function translateStatus(status: string) {
         case 'refunded':
             text = 'คืนเงิน';
             break;
+        case 'public':
+            text = 'เผยแพร่';
+            break;
+        case 'private':
+            text = 'ส่วนตัว';
+            break;
         default:
             text = 'ไม่พบสถาณะ';
     }

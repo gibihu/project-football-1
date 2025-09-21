@@ -47,7 +47,7 @@ export default function PaymentUploadPage() {
                     body: formData,
                 });
                 const result = await res.json();
-                if (result.code == 200) {
+                if (result.code == 201) {
                     toast.success(result.message);
                     // console.log(result);
                     navigate('/pack-point');

@@ -113,7 +113,7 @@ function isUpper(amount: number) {
 }
 
 function timeAgoShort(isoDate?: string): string {
-    if(!isoDate){ return isoDate || '';}
+    if (!isoDate) { return isoDate || ''; }
     const date = new Date(isoDate);
     const now = new Date();
 
@@ -133,12 +133,18 @@ function timeAgoShort(isoDate?: string): string {
     return `${diffYear} ปี`;
 }
 
+function truncateMessage(message: string, maxLength = 200, dot = false): string {
+    let show = message.length > maxLength ? message.slice(0, maxLength) : message;
+    return show+(dot && '...');
+}
+
 export {
-    ShortName,
-    EventTrans,
-    timeDiff,
-    timeDiffRounded,
-    formatDateTime,
-    isUpper,
-    timeAgoShort,
+    ShortName, // แปลงชื่อเป็ตัวย่อ
+    EventTrans, //แปลง status เป็นภาษาไทย
+    timeDiff, //แปลง Data เป็นวันที่ภาษาไทย
+    timeDiffRounded, // แปลง Data เป็นวันที่แบบย่อ
+    formatDateTime, // แปลงวันที่เต็มเป็นสั่นๆ 9/19 22:30
+    isUpper, //เพิ่มขึ้นหรือลดลง
+    timeAgoShort, //แปลงวันที่เป็นอดีตแบบสั้น
+    truncateMessage, // ตัดข้อความ
 }

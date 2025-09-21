@@ -1,3 +1,5 @@
+import { UserGuast } from './user';
+
 export interface PackType {
     id: string,
     sort_no: number;
@@ -48,6 +50,19 @@ export interface WalletType {
     id: string;
     points: number;
     income: number;
+    updated_at: string;
+    created_at: string;
+}
+
+
+export interface PostType {
+    id: string;
+    user_id: string;
+    user: UserGuast;
+    title: string;
+    contents: string;
+    points: number;
+    status: string;
     updated_at: string;
     created_at: string;
 }
